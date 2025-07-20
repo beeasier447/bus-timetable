@@ -69,6 +69,12 @@
   </div>
 
 <script>
+  // 時間格式化函數：將時間轉換為兩位數格式（如 09:00）
+  function formatTime(timeStr) {
+    const [hour, minute] = timeStr.split(':');
+    return hour.padStart(2, '0') + ':' + minute.padStart(2, '0');
+  }
+
   function getPeriodRange(period) {
     if (period === "morning") return [0, 12];
     if (period === "afternoon") return [12, 18];
@@ -98,12 +104,16 @@
       if (row[2] === from && row[4] === to) {
         const hour = parseInt(row[3].split(':')[0]);
         if (hour >= startH && hour < endH) {
+          // 格式化出發時間和到達時間為兩位數格式
+          const departureTime = formatTime(row[3]);
+          const arrivalTime = formatTime(row[5]);
+
           body.innerHTML += `
             <tr class="border-b hover:bg-gray-50">
               <td class="px-4 py-2">${row[2]}</td>
-              <td class="px-4 py-2 text-indigo-600 font-semibold">${row[3]}</td>
+              <td class="px-4 py-2 text-indigo-600 font-semibold">${departureTime}</td>
               <td class="px-4 py-2">${row[4]}</td>
-              <td class="px-4 py-2">${row[5]}</td>
+              <td class="px-4 py-2 text-indigo-600 font-semibold">${arrivalTime}</td>
             </tr>`;
         }
       }
