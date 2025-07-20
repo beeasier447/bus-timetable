@@ -17,8 +17,8 @@
       <div>
         <label class="block mb-1 font-medium">選擇日期</label>
         <select id="dayType" class="w-full border px-3 py-2 rounded">
-          <option value="weekday">平日</option>
-          <option value="holiday">假日</option>
+          <option value="weekday_all.csv">平日</option>
+          <option value="holiday_all.csv">假日</option>
         </select>
       </div>
       <div>
@@ -26,12 +26,14 @@
         <select id="fromStation" class="w-full border px-3 py-2 rounded">
           <option>高鐵臺中站</option>
           <option>日月潭</option>
+          <option>向山行政中心</option>
         </select>
       </div>
       <div>
         <label class="block mb-1 font-medium">到達站</label>
         <select id="toStation" class="w-full border px-3 py-2 rounded">
           <option>日月潭</option>
+          <option>向山行政中心</option>
           <option>高鐵臺中站</option>
         </select>
       </div>
@@ -70,11 +72,6 @@
   </div>
 
 <script>
-  function getCsvFile(dayType, from, to) {
-    const direction = (from === "高鐵臺中站") ? "go" : "back";
-    return `${dayType}${direction}.csv`;
-  }
-
   function getPeriodRange(period) {
     if (period === "morning") return [0, 12];
     if (period === "afternoon") return [12, 18];
@@ -117,7 +114,7 @@
   }
 
   document.getElementById("searchBtn").addEventListener("click", async () => {
-    const day = document.getElementById("dayType").value;
+    const file = document.getElementById("dayType").value;
     const from = document.getElementById("fromStation").value;
     const to = document.getElementById("toStation").value;
     const period = document.getElementById("timePeriod").value;
@@ -127,7 +124,6 @@
       return;
     }
 
-    const file = getCsvFile(day, from, to);
     const rows = await fetchCsv(file);
     renderTable(rows, from, to, period);
   });
